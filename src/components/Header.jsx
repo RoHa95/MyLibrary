@@ -3,11 +3,18 @@ import Search from "./Search";
 import GotoAdvensedSearch from "./GotoAdvensedSearch";
 import Grouping from "./Grouping";
 import GotoFavoriteList from "./GotoFavoriteList";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+  const navigate = useNavigate();
   return (
     <div className="w-full flex bg-indigo-800 h-14  px-4 mx-auto md:px-20  items-center justify-between">
-      <span className="text-white text-xs sm:text-base font-bold w-fit">
+      <span
+        onClick={() => {
+          navigate("/home");
+        }}
+        className="text-white text-xs sm:text-base font-bold w-fit"
+      >
         کتابخانه من
       </span>
 
