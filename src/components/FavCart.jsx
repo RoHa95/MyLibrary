@@ -3,14 +3,15 @@ import React from "react";
 //images
 import book from "../assets/salar.jpg";
 import AddToQoue from "./AddToQoue";
+import DeleteToQoue from "./DeleteToQoue";
 
-function Cart({ data }) {
+function FavCart({ data }) {
   if (!data) return null;
   const { id, title, author, image, pages, category } = data;
   console.log(title);
 
   return (
-    <div className="w-80 h-110 border border-indigo-800 rounded-xs  flex flex-col items-center justify-between my-6 hover:bg-indigo-50">
+    <div className="min-w-80 h-110 border border-indigo-800 rounded-xs  flex flex-col items-center justify-between my-6 hover:bg-indigo-50">
       <img className="w-fit h-60 mt-4" src={book} />
       <div className="flex flex-col items-start justify-between mt-2">
         <div>
@@ -36,10 +37,10 @@ function Cart({ data }) {
             </span>
           </div>
         </div>
-        <AddToQoue data={data} />
+        <DeleteToQoue data={data} />
       </div>
     </div>
   );
 }
 
-export default Cart;
+export default FavCart;

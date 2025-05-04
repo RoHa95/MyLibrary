@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { ListContext } from "../Context/ListContext";
 
-function AddToQoue({ data }) {
-  const { favoriteBooks, setFavBook } =
+function DeleteToQoue({ data }) {
+  const { favoriteBooks,deleteFavBook } =
     useContext(ListContext);
   if (!data) return null;
   const clickHandler = () => {
-    setFavBook(data);
+    deleteFavBook(data.id);
     console.log(favoriteBooks);
   };
   return (
@@ -14,9 +14,9 @@ function AddToQoue({ data }) {
       onClick={clickHandler}
       className="p-2 bg-indigo-800 text-white my-4 px-4 rounded-xl hover:bg-indigo-100 hover:border hover:border-indigo-800 hover:text-indigo-800 cursor-pointer"
     >
-      اضافه کردن به فهرست مورد علاقه ها
+      حذف از فهرست مورد علاقه ها
     </div>
   );
 }
 
-export default AddToQoue;
+export default DeleteToQoue;

@@ -9,6 +9,11 @@ function ListProvider({ children }) {
     setFavoriteBooks([...favoriteBooks, book]);
     localStorage.setItem("favBooks", JSON.stringify(favoriteBooks));
   };
+  const deleteFavBook = (id) => {
+    const newFavBook = favoriteBooks.filter((item) => item.id !== id);
+    setFavoriteBooks(newFavBook);
+    localStorage.setItem("favBooks", JSON.stringify(newFavBook));
+  };
   useEffect(() => {
     if (localFavorite) {
       setFavoriteBooks(localFavorite);
@@ -18,7 +23,7 @@ function ListProvider({ children }) {
   }, []);
   return (
     <ListContext.Provider
-      value={{ favoriteBooks, setFavoriteBooks, setFavBook }}
+      value={{ favoriteBooks, setFavoriteBooks, setFavBook, deleteFavBook }}
     >
       {children}
     </ListContext.Provider>
