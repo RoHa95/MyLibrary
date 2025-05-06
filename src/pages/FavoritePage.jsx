@@ -13,7 +13,7 @@ function FavoritePage() {
       <Header />
       <div className="p-4 mx-auto md:px-20 flex flex-wrap gap-4 sm:justify-between justify-center items-center">
         {favoriteBooks.map((item) => (
-          <FavCart data={item} />
+          <FavCart key={item.id} data={item} />
         ))}
       </div>
     </>

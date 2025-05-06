@@ -8,9 +8,10 @@ export const bookListContext = createContext([]);
 
 function BookListProvider({ children }) {
   const [bookList, setBookList] = useState([]);
-  const localBooks = JSON.parse(localStorage.getItem("books"));
   const internalBooks = books;
+ 
   useEffect(() => {
+    const localBooks = JSON.parse(localStorage.getItem("books"));
     if (localBooks) {
       setBookList(localBooks);
     } else {
@@ -18,6 +19,7 @@ function BookListProvider({ children }) {
       localStorage.setItem("books",JSON.stringify(internalBooks));
     }
   }, []);
+  
   return (
     <bookListContext.Provider value={{ bookList, setBookList }}>
       {children}

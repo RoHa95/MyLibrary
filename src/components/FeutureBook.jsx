@@ -14,9 +14,9 @@ function FeutureBook() {
         کتاب های مورد علاقه
       </h2>
       <div className="flex flex-col sm:flex-row gap-1 lg:gap-3 items-center justify-center">
-        <div className="flex gap-x-3 overflow-x-scroll items-center">
+        <div className="flex px-5 gap-x-3 overflow-auto overflow-x-scroll items-center">
           {favoriteBooks.map((item) => (
-            <FavCart data={item}></FavCart>
+            <FavCart key={item.id} data={item}></FavCart>
           ))}
         </div>
       </div>

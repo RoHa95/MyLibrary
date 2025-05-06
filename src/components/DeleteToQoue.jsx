@@ -7,7 +7,6 @@ function DeleteToQoue({ data }) {
   if (!data) return null;
   const clickHandler = () => {
     deleteFavBook(data.id);
-    console.log(favoriteBooks);
   };
   return (
     <div
