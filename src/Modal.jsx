@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 //context
 import { bookListContext } from "./Context/BookListContext";
+import { addImage } from "./db";
 
 function Modal({ setIsOpen }) {
   const [category, setCategory] = useState([]);
@@ -29,23 +30,23 @@ function Modal({ setIsOpen }) {
   }, []);
 
   // create indexedDb
-  useEffect(() => {
-    const request = indexedDB.open("MyImageDB", 1);
+  // useEffect(() => {
+  //   const request = indexedDB.open("MyImageDB", 1);
 
-    request.onupgradeneeded = (event) => {
-      const database = event.target.result;
-      database.createObjectStore("images", { keyPath: "id" });
-    };
+  //   request.onupgradeneeded = (event) => {
+  //     const database = event.target.result;
+  //     database.createObjectStore("images", { keyPath: "id" });
+  //   };
 
-    request.onsuccess = (event) => {
-      setDb(event.target.result);
-      console.log("✅ IndexedDB آماده است");
-    };
+  //   request.onsuccess = (event) => {
+  //     setDb(event.target.result);
+  //     console.log("✅ IndexedDB آماده است");
+  //   };
 
-    request.onerror = () => {
-      console.error("❌ خطا در باز کردن IndexedDB");
-    };
-  }, []);
+  //   request.onerror = () => {
+  //     console.error("❌ خطا در باز کردن IndexedDB");
+  //   };
+  // }, []);
 
   //get file from user
   const handleFileChange = (e) => {
@@ -57,20 +58,12 @@ function Modal({ setIsOpen }) {
     setImageUrl(url);
   };
   //save in indexedDB
-  const handleSave = () => {
-    if (!db || !selectedFile) return;
+  const handleSave = async () => {
 
-    const tx = db.transaction("images", "readwrite");
-    const store = tx.objectStore("images");
-
-    store.put({
-      id: imageId,
-      file: selectedFile,
-    });
-
-    tx.oncomplete = () => {
-      alert("✅ تصویر ذخیره شد");
-    };
+    await addImage(imageId,selectedFile)
+  
+   console.log("عکس ذخیره شد با id:");
+   
     setData({ ...data, image: imageId });
   };
   //

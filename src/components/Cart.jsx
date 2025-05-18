@@ -5,50 +5,36 @@ import React, { useContext, useEffect, useState } from "react";
 import AddToQoue from "./AddToQoue";
 import { bookListContext } from "../Context/BookListContext";
 import { books } from "../data";
-import { openDB } from "../db";
+import { getImageUrl } from "../db";
 
 function Cart({ data }) {
   if (!data) return null;
-
-  const [db, setDb] = useState(null);
-
   const { id, title, author, image, pages, category } = data;
-  let originImageAddress = image;
-  // useEffect(() => {
-  //   const request = indexedDB.open("MyImageDB", 1);
+  const [imageUrl, setImageUrl] = useState(image);
 
-  //   request.onupgradeneeded = (event) => {
-  //     const database = event.target.result;
-  //     database.createObjectStore("images", { keyPath: "id" });
-  //   };
+  useEffect(() => {
+    async function fetchImage() {
+      const url = await getImageUrl(image);
+      if (url) {
+        setImageUrl(url);
+      }
+    }
+    if (id > books.length) {
+      fetchImage();
+      console.log("bozork");
+      console.log(imageUrl);
+      
+    } else {
+      setImageUrl(image);
+      console.log("koochik");
+      console.log(imageUrl);
+      
+    }
+  }, []);
 
-  //   request.onsuccess = (event) => {
-  //     setDb(event.target.result);
-  //     console.log("✅ IndexedDB آماده است");
-  //   };
-
-  //   request.onerror = () => {
-  //     console.error("❌ خطا در باز کردن IndexedDB");
-  //   };
-  // }, []);
-  
-// if (books.length <= id) {
-//    openDB().then(db=> {const tx = db.transaction("images", "readonly");
-//     const store = tx.objectStore("images");
-//     const request = store.get(image);
-//     request.onsuccess = () => {
-//       const result = request.result;
-//       if (result) {
-//         const imageUrl = URL.createObjectURL(result.file);
-//         originImageAddress = imageUrl;
-//       }}
-//     )
-//   } else {
-//     originImageAddress = image;
-//   }
   return (
     <div className="w-65 h-90 border border-indigo-800 rounded-xs  flex flex-col items-center justify-between my-6 hover:bg-indigo-50">
-      <img className="w-fit h-40 mt-4" src={originImageAddress} />
+      <img className="w-fit h-40 mt-4" src={imageUrl} />
       <div className="flex flex-col items-start justify-between mt-2">
         <div>
           <span className="text-indigo-800">نام کتاب : </span>
