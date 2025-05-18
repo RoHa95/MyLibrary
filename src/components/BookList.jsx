@@ -17,7 +17,7 @@ function BookList() {
         <AddNewBook />
       </div>
       <div className="flex flex-col lg:flex-row gap-1 lg:gap-3 items-center justify-center">
-        {bookList.bookList.map(item=>(<Cart key={item.id} data={item}/>))}
+        {bookList.bookList.map((item)=>(<Cart key={item.id} data={item}/>))}
       </div>
     </div>
   );

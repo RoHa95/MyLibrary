@@ -1,26 +1,79 @@
-import React, { useEffect, useState } from "react";
-import ImageStoraged from "./components/ImageStoraged";
+import React, { useContext, useEffect, useState } from "react";
+
+//context
+import { bookListContext } from "./Context/BookListContext";
 
 function Modal({ setIsOpen }) {
-  const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState([]);
+  const [tempraryCategory, settempraryCategory] = useState("");
+  const [db, setDb] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
   const [data, setData] = useState({
+    id: 0,
     title: "",
     author: "",
     pages: "",
-    categories: [],
+    image: "",
+    category: [],
   });
+  const { addNewTitle, bookList } = useContext(bookListContext);
+  const imageId = `book-${Date.now()}`;
+  //No Scroll bg
   useEffect(() => {
-    // وقتی مودال باز میشه، اسکرول غیرفعال شه
+    setData({ ...data, id: bookList.length + 1 });
     document.body.style.overflow = "hidden";
-
-    // وقتی مودال بسته شد، اسکرول برگرده به حالت قبل
     return () => {
       document.body.style.overflow = "auto";
     };
   }, []);
-  
 
+  // create indexedDb
+  useEffect(() => {
+    const request = indexedDB.open("MyImageDB", 1);
+
+    request.onupgradeneeded = (event) => {
+      const database = event.target.result;
+      database.createObjectStore("images", { keyPath: "id" });
+    };
+
+    request.onsuccess = (event) => {
+      setDb(event.target.result);
+      console.log("✅ IndexedDB آماده است");
+    };
+
+    request.onerror = () => {
+      console.error("❌ خطا در باز کردن IndexedDB");
+    };
+  }, []);
+
+  //get file from user
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+    const url = URL.createObjectURL(file);
+    setImageUrl(url);
+  };
+  //save in indexedDB
+  const handleSave = () => {
+    if (!db || !selectedFile) return;
+
+    const tx = db.transaction("images", "readwrite");
+    const store = tx.objectStore("images");
+
+    store.put({
+      id: imageId,
+      file: selectedFile,
+    });
+
+    tx.oncomplete = () => {
+      alert("✅ تصویر ذخیره شد");
+    };
+    setData({ ...data, image: imageId });
+  };
+  //
   const backgroundHandler = (e) => {
     if (e.target === e.currentTarget) {
       setIsOpen(false);
@@ -34,12 +87,19 @@ function Modal({ setIsOpen }) {
     console.log(data);
   };
   const addCategory = (e) => {
-    setCategories([...categories, category]);
-    setData({ ...data, categories: categories });
-    console.log(categories);
-    setCategory("");
+    const newCategory = [...category, tempraryCategory];
+    setCategory(newCategory);
+    const newData = { ...data, category: newCategory };
+    setData(newData);
+    console.log(newCategory);
+    settempraryCategory("");
   };
-
+  const submitHandler = (e) => {
+    e.preventDefault();
+    addNewTitle(data);
+    console.log(data);
+    setIsOpen(false);
+  };
   return (
     <div
       className="bg-gray-600/90 fixed size-auto inset-0 flex items-center justify-center"
@@ -84,10 +144,20 @@ function Modal({ setIsOpen }) {
         <label htmlFor="picture" className="text-base text-gray-600 py-0.5">
           تصویر کتاب
         </label>
-        <input
-          type="file"
-          name="picture"
-          className="border border-gray-400/60 w-full text-xs py-1 px-2 h-8"
+        <div className="flex">
+          <input
+            onChange={handleFileChange}
+            type="file"
+            name="picture"
+            className="border border-gray-400/60 w-full text-xs py-1 px-2 h-8"
+          />
+          <div onClick={handleSave}>تایید</div>
+        </div>
+
+        <img
+          src={imageUrl}
+          alt="Uploaded"
+          style={{ marginTop: 20, width: 100, height: "auto" }}
         />
         <label htmlFor="category" className="text-base text-gray-600 py-0.5">
           دسته بندی
@@ -96,8 +166,8 @@ function Modal({ setIsOpen }) {
           <input
             type="text"
             name="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            value={tempraryCategory}
+            onChange={(e) => settempraryCategory(e.target.value)}
             className="border border-gray-400/60 w-full text-xs py-1 px-2 h-8"
             placeholder="دسته بندی  ..."
           />
@@ -109,12 +179,21 @@ function Modal({ setIsOpen }) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          {categories.map((item) => (
-            <span className=" text-white bg-indigo-600 rounded-md px-1 pb-1 text-xs">
+          {category.map((item, index) => (
+            <span
+              key={index}
+              className=" text-white bg-indigo-600 rounded-md px-1 pb-1 text-xs"
+            >
               {item}
             </span>
           ))}
         </div>
+        <button
+          onClick={submitHandler}
+          className="bg-indigo-600 rounded-md px-2 py-0.5 text-white mt-4"
+        >
+          ثبت اطلاعات
+        </button>
       </form>
     </div>
   );

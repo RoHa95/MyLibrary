@@ -30,6 +30,8 @@ const ImageStoraged = () => {
     if (file) {
       setSelectedFile(file);
     }
+    const url = URL.createObjectURL(file);
+    setImageUrl(url);
   };
 
   // 3. ذخیره کردن در IndexedDB
