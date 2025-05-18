@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-//images
-
+//components
 import AddToQoue from "./AddToQoue";
-import { bookListContext } from "../Context/BookListContext";
-import { books } from "../data";
+
+//helper
 import { getImageUrl } from "../db";
 
 function Cart({ data }) {
@@ -19,16 +18,10 @@ function Cart({ data }) {
         setImageUrl(url);
       }
     }
-    if (id > books.length) {
+    if (image.includes("book")) {
       fetchImage();
-      console.log("bozork");
-      console.log(imageUrl);
-      
     } else {
       setImageUrl(image);
-      console.log("koochik");
-      console.log(imageUrl);
-      
     }
   }, []);
 

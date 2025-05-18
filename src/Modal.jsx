@@ -1,15 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 //context
 import { bookListContext } from "./Context/BookListContext";
+
+//helper
 import { addImage } from "./db";
 
 function Modal({ setIsOpen }) {
   const [category, setCategory] = useState([]);
   const [tempraryCategory, settempraryCategory] = useState("");
-  const [db, setDb] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+  const [isAlertOn, setIsAlertOn] = useState(false);
   const [data, setData] = useState({
     id: 0,
     title: "",
@@ -20,7 +22,8 @@ function Modal({ setIsOpen }) {
   });
   const { addNewTitle, bookList } = useContext(bookListContext);
   const imageId = `book-${Date.now()}`;
-  //No Scroll bg
+
+  //No Scroll background
   useEffect(() => {
     setData({ ...data, id: bookList.length + 1 });
     document.body.style.overflow = "hidden";
@@ -28,25 +31,6 @@ function Modal({ setIsOpen }) {
       document.body.style.overflow = "auto";
     };
   }, []);
-
-  // create indexedDb
-  // useEffect(() => {
-  //   const request = indexedDB.open("MyImageDB", 1);
-
-  //   request.onupgradeneeded = (event) => {
-  //     const database = event.target.result;
-  //     database.createObjectStore("images", { keyPath: "id" });
-  //   };
-
-  //   request.onsuccess = (event) => {
-  //     setDb(event.target.result);
-  //     console.log("✅ IndexedDB آماده است");
-  //   };
-
-  //   request.onerror = () => {
-  //     console.error("❌ خطا در باز کردن IndexedDB");
-  //   };
-  // }, []);
 
   //get file from user
   const handleFileChange = (e) => {
@@ -57,21 +41,24 @@ function Modal({ setIsOpen }) {
     const url = URL.createObjectURL(file);
     setImageUrl(url);
   };
+
   //save in indexedDB
   const handleSave = async () => {
+    await addImage(imageId, selectedFile);
 
-    await addImage(imageId,selectedFile)
-  
-   console.log("عکس ذخیره شد با id:");
-   
+    console.log("عکس ذخیره شد با id:");
+
     setData({ ...data, image: imageId });
   };
-  //
+
+  //check click in Modal background
   const backgroundHandler = (e) => {
     if (e.target === e.currentTarget) {
       setIsOpen(false);
     }
   };
+
+  //get data from inputs
   const changeHandler = (e) => {
     if (e.target.name === "category") {
     } else {
@@ -79,6 +66,8 @@ function Modal({ setIsOpen }) {
     }
     console.log(data);
   };
+
+  //get an array of category from user
   const addCategory = (e) => {
     const newCategory = [...category, tempraryCategory];
     setCategory(newCategory);
@@ -87,12 +76,25 @@ function Modal({ setIsOpen }) {
     console.log(newCategory);
     settempraryCategory("");
   };
+
+  //final submit data
   const submitHandler = (e) => {
     e.preventDefault();
-    addNewTitle(data);
-    console.log(data);
-    setIsOpen(false);
+    if (
+      !data.author ||
+      !data.category ||
+      !data.image ||
+      !data.pages ||
+      !data.title
+    ) {
+      setIsAlertOn(true);
+    } else {
+      addNewTitle(data);
+      console.log(data);
+      setIsOpen(false);
+    }
   };
+
   return (
     <div
       className="bg-gray-600/90 fixed size-auto inset-0 flex items-center justify-center"
@@ -181,6 +183,7 @@ function Modal({ setIsOpen }) {
             </span>
           ))}
         </div>
+        {isAlertOn?<span className="bg-red-200 text-red-500 text-xs rounded-md pb-0.5 px-1">لطفا موارد خالی را پر کنید.</span>:""}
         <button
           onClick={submitHandler}
           className="bg-indigo-600 rounded-md px-2 py-0.5 text-white mt-4"

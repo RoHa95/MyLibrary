@@ -16,7 +16,7 @@ function BookList() {
         <h1>تمام کتاب ها</h1>
         <AddNewBook />
       </div>
-      <div className="flex flex-col lg:flex-row gap-1 lg:gap-3 items-center justify-center">
+      <div className="flex flex-col  sm:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-1 lg:gap-3 items-center justify-center">
         {bookList.bookList.map((item)=>(<Cart key={item.id} data={item}/>))}
       </div>
     </div>

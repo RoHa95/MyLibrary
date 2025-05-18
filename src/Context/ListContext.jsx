@@ -7,7 +7,8 @@ function ListProvider({ children }) {
   const localFavorite = JSON.parse(localStorage.getItem("favBooks"));
   const setFavBook = (book) => {
     setFavoriteBooks([...favoriteBooks, book]);
-    localStorage.setItem("favBooks", JSON.stringify(favoriteBooks));
+    const newFavoriteBooks = [...favoriteBooks, book];
+    localStorage.setItem("favBooks", JSON.stringify(newFavoriteBooks));
   };
   const deleteFavBook = (id) => {
     const newFavBook = favoriteBooks.filter((item) => item.id !== id);
