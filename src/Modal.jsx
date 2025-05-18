@@ -100,7 +100,7 @@ function Modal({ setIsOpen }) {
       className="bg-gray-600/90 fixed size-auto inset-0 flex items-center justify-center"
       onClick={backgroundHandler}
     >
-      <form className="w-1/3 bg-white rounded-md p-4 flex items-start flex-col justify-start">
+      <form className="w-9/12 sm:w-1/3 bg-white rounded-md p-4 flex items-start flex-col justify-start">
         <h2 className="text-lg">اضافه کردن کتاب جدید</h2>
 
         <label htmlFor="title" className="text-base text-gray-600 py-0.5">
