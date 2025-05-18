@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
+
+//context
 import { ListContext } from "../Context/ListContext";
-import Cart from "../components/Cart";
+
+//components
 import Header from "../components/Header";
 import FavCart from "../components/FavCart";
 
 function FavoritePage() {
-  const { favoriteBooks, setFavoriteBooks } = useContext(ListContext);
+  const { favoriteBooks } = useContext(ListContext);
   console.log(favoriteBooks);
 
   return (

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { ListContext } from "../Context/ListContext";
 
 function DeleteToQoue({ data }) {
-  const { favoriteBooks,deleteFavBook } =
+  const { deleteFavBook } =
     useContext(ListContext);
   if (!data) return null;
   const clickHandler = () => {

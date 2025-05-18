@@ -11,6 +11,7 @@ function Cart({ data }) {
   const { id, title, author, image, pages, category } = data;
   const [imageUrl, setImageUrl] = useState(image);
 
+  //get image from indexed database
   useEffect(() => {
     async function fetchImage() {
       const url = await getImageUrl(image);

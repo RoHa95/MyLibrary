@@ -5,6 +5,8 @@ function AddToQoue({ data }) {
   const { favoriteBooks, setFavBook, deleteFavBook } = useContext(ListContext);
   const [add, setAdd] = useState(true);
   if (!data) return null;
+
+  //check already is favoreted or no
   useEffect(() => {
     if (favoriteBooks.find((item) => item.id === data.id)) {
       setAdd(false);
@@ -13,6 +15,7 @@ function AddToQoue({ data }) {
     }
   }, [favoriteBooks]);
 
+  //add or remove from favorite list
   const clickHandler = (type) => {
     if (type === "add") {
       setFavBook(data);
