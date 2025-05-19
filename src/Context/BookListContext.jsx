@@ -27,8 +27,12 @@ function BookListProvider({ children }) {
     setBookList([...bookList, book]);
     localStorage.setItem("books", JSON.stringify(newList));
   };
+  const findDetailBook = (id) => {
+    const result = bookList.find((item) => item.id === id);
+    return result;
+  };
   return (
-    <bookListContext.Provider value={{ bookList, setBookList, addNewTitle }}>
+    <bookListContext.Provider value={{ bookList, setBookList, addNewTitle,findDetailBook }}>
       {children}
     </bookListContext.Provider>
   );
