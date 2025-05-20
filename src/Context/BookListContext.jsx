@@ -27,12 +27,23 @@ function BookListProvider({ children }) {
     setBookList([...bookList, book]);
     localStorage.setItem("books", JSON.stringify(newList));
   };
+  const addNewNote = (id, note) => {
+    const book = bookList.find((item) => item.id === id);
+    console.log(book);
+    book.note.push(note);
+    const filtered = bookList.filter((item) => item.id !== id);
+    const newBookList = filtered.concat(book);
+    setBookList(newBookList);
+    localStorage.setItem("books", JSON.stringify(newBookList));
+  };
   const findDetailBook = (id) => {
     const result = bookList.find((item) => item.id === id);
     return result;
   };
   return (
-    <bookListContext.Provider value={{ bookList, setBookList, addNewTitle,findDetailBook }}>
+    <bookListContext.Provider
+      value={{ bookList, setBookList, addNewTitle, findDetailBook,addNewNote }}
+    >
       {children}
     </bookListContext.Provider>
   );

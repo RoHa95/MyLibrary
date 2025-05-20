@@ -6,6 +6,7 @@ export const books = [
     image: "/salar.jpg",
     pages: "650",
     category: ["رمان", "داستان خارجی", "برنده نوبل"],
+    note:[]
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ export const books = [
     image: "/a1.webp",
     pages: "367",
     category: ["روانشناسی", "خودسازی", "موفقیت"],
+     note:[]
   },
   {
     id: 3,
@@ -22,6 +24,7 @@ export const books = [
     image: "/a4.jpg",
     pages: "336",
     category: ["روانشناسی", "خودسازی", "موفقیت"],
+     note:[]
   },
   {
     id: 4,
@@ -30,5 +33,6 @@ export const books = [
     image: "/a3.jpg",
     pages: "251",
     category: ["رمان", "کتاب نوجوان", "داستان خارجی"],
+     note:[]
   },
 ];

@@ -19,6 +19,7 @@ function Modal({ setIsOpen }) {
     pages: "",
     image: "",
     category: [],
+    note:[]
   });
   const { addNewTitle, bookList } = useContext(bookListContext);
   const imageId = `book-${Date.now()}`;

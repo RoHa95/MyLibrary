@@ -5,12 +5,14 @@ import AddToQoue from "./AddToQoue";
 
 //helper
 import { getImageUrl } from "../db";
+import { useNavigate } from "react-router-dom";
 
 function Cart({ data }) {
   if (!data) return null;
   const { id, title, author, image, pages, category } = data;
   const [imageUrl, setImageUrl] = useState(image);
 
+  const navigate = useNavigate();
   //get image from indexed database
   useEffect(() => {
     async function fetchImage() {
@@ -26,8 +28,15 @@ function Cart({ data }) {
     }
   }, []);
 
+  const goDetalsPageHandler = (e) => {
+    e.stopPropagation();
+     navigate(`/books/${data.id}`);
+  };
   return (
-    <div className="w-65 h-90 border border-indigo-800 rounded-xs  flex flex-col items-center justify-between my-6 hover:bg-indigo-50">
+    <div
+      onClick={goDetalsPageHandler}
+      className="w-65 h-90 border border-indigo-800 rounded-xs  flex flex-col items-center justify-between my-6 hover:bg-indigo-50"
+    >
       <img className="w-fit h-40 mt-4" src={imageUrl} />
       <div className="flex flex-col items-start justify-between mt-2">
         <div>
